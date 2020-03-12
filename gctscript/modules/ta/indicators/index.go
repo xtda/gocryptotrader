@@ -19,25 +19,25 @@ func mfi(args ...objects.Object) (objects.Object, error) {
 	}
 
 	ohlcData := objects.ToInterface(args[0])
-	ohlcHighData, err := appendData(ohlcData.([]interface{}))
+	ohlcHighData, err := appendDataFloat(ohlcData.([]interface{}))
 	if err != nil {
 		return nil, err
 	}
 
 	ohlcData = objects.ToInterface(args[1])
-	ohlcLowData, err := appendData(ohlcData.([]interface{}))
+	ohlcLowData, err := appendDataFloat(ohlcData.([]interface{}))
 	if err != nil {
 		return nil, err
 	}
 
 	ohlcData = objects.ToInterface(args[2])
-	ohlcCloseData, err := appendData(ohlcData.([]interface{}))
+	ohlcCloseData, err := appendDataFloat(ohlcData.([]interface{}))
 	if err != nil {
 		return nil, err
 	}
 
 	ohlcData = objects.ToInterface(args[2])
-	ohlcVolData, err := appendData(ohlcData.([]interface{}))
+	ohlcVolData, err := appendDataFloat(ohlcData.([]interface{}))
 	if err != nil {
 		return nil, err
 	}

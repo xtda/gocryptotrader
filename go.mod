@@ -16,8 +16,9 @@ require (
 	github.com/mattn/go-sqlite3 v1.13.0
 	github.com/pkg/errors v0.9.1
 	github.com/pquerna/otp v1.2.0
+	github.com/sdcoffey/techan v0.10.0 // indirect
 	github.com/spf13/viper v1.6.2
-	github.com/thrasher-corp/go-talib v0.0.0-20200310034222-5247764b720a // indirect
+	github.com/thrasher-corp/go-talib v0.0.0-20200310034222-5247764b720a
 	github.com/thrasher-corp/goose v2.7.0-rc4.0.20191002032028-0f2c2a27abdb+incompatible
 	github.com/thrasher-corp/sqlboiler v1.0.1-0.20191001234224-71e17f37a85e
 	github.com/toorop/go-pusher v0.0.0-20180521062818-4521e2eb39fb

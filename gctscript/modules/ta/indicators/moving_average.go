@@ -21,7 +21,7 @@ func macd(args ...objects.Object) (objects.Object, error) {
 	}
 
 	ohlcData := objects.ToInterface(args[0])
-	ohlcCloseData, err := appendData(ohlcData.([]interface{}))
+	ohlcCloseData, err := appendDataFloat(ohlcData.([]interface{}))
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func ema(args ...objects.Object) (objects.Object, error) {
 	}
 
 	ohlcData := objects.ToInterface(args[0])
-	ohlcCloseData, err := appendData(ohlcData.([]interface{}))
+	ohlcCloseData, err := appendDataFloat(ohlcData.([]interface{}))
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func sma(args ...objects.Object) (objects.Object, error) {
 	}
 
 	ohlcData := objects.ToInterface(args[0])
-	ohlcCloseData, err := appendData(ohlcData.([]interface{}))
+	ohlcCloseData, err := appendDataFloat(ohlcData.([]interface{}))
 	if err != nil {
 		return nil, err
 	}

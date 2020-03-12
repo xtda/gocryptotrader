@@ -16,13 +16,13 @@ func obv(args ...objects.Object) (objects.Object, error) {
 	}
 
 	ohlcData := objects.ToInterface(args[0])
-	ohlcInData, err := appendData(ohlcData.([]interface{}))
+	ohlcInData, err := appendDataFloat(ohlcData.([]interface{}))
 	if err != nil {
 		return nil, err
 	}
 
 	ohlcData = objects.ToInterface(args[0])
-	ohlcVolData, err := appendData(ohlcData.([]interface{}))
+	ohlcVolData, err := appendDataFloat(ohlcData.([]interface{}))
 	if err != nil {
 		return nil, err
 	}

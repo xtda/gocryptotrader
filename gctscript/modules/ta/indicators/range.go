@@ -19,19 +19,19 @@ func atr(args ...objects.Object) (objects.Object, error) {
 	}
 
 	ohlcData := objects.ToInterface(args[0])
-	tempOHLCSlice, err := appendData(ohlcData.([]interface{}))
+	tempOHLCSlice, err := appendDataFloat(ohlcData.([]interface{}))
 	if err != nil {
 		return nil, err
 	}
 
 	ohlcData = objects.ToInterface(args[1])
-	tempOHLCVolSlice, err := appendData(ohlcData.([]interface{}))
+	tempOHLCVolSlice, err := appendDataFloat(ohlcData.([]interface{}))
 	if err != nil {
 		return nil, err
 	}
 
 	ohlcData = objects.ToInterface(args[2])
-	tempOHLCCloseSlice, err := appendData(ohlcData.([]interface{}))
+	tempOHLCCloseSlice, err := appendDataFloat(ohlcData.([]interface{}))
 	if err != nil {
 		return nil, err
 	}
