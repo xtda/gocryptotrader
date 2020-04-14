@@ -323,7 +323,7 @@ func (y *Yobit) GetFundingHistory() ([]exchange.FundHistory, error) {
 }
 
 // GetExchangeHistory returns historic trade data since exchange opening.
-func (y *Yobit) GetExchangeHistory(p currency.Pair, assetType asset.Item) ([]exchange.TradeHistory, error) {
+func (y *Yobit) GetExchangeHistory(req *exchange.TradeHistoryRequest) ([]exchange.TradeHistory, error) {
 	return nil, common.ErrNotYetImplemented
 }
 

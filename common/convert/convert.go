@@ -71,6 +71,11 @@ func UnixTimestampStrToTime(timeStr string) (time.Time, error) {
 	return time.Unix(i, 0), nil
 }
 
+// UnixMillisToNano converts Unix milli time to UnixNano
+func UnixMillisToNano(milli int64) int64 {
+	return milli * int64(time.Millisecond)
+}
+
 // UnixMillis converts a UnixNano timestamp to milliseconds
 func UnixMillis(t time.Time) int64 {
 	return t.UnixNano() / int64(time.Millisecond)
@@ -125,4 +130,11 @@ func ParseIntervalDuration(d time.Duration) string {
 		s = s[:len(s)-2]
 	}
 	return s
+}
+
+// TimeStringToRFC3339 converts returned time string to time.Time
+func TimeStringToRFC3339(timestamp string) (time.Time, error) {
+	split := strings.Split(timestamp, " ")
+	join := strings.Join(split, "T")
+	return time.Parse(time.RFC3339, join+"Z")
 }

@@ -262,7 +262,7 @@ func (o *OKGroup) GetFundingHistory() (resp []exchange.FundHistory, err error) {
 }
 
 // GetExchangeHistory returns historic trade data since exchange opening.
-func (o *OKGroup) GetExchangeHistory(p currency.Pair, assetType asset.Item) ([]exchange.TradeHistory, error) {
+func (o *OKGroup) GetExchangeHistory(_ *exchange.TradeHistoryRequest) ([]exchange.TradeHistory, error) {
 	return nil, common.ErrNotYetImplemented
 }
 

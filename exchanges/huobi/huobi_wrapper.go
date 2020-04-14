@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/thrasher-corp/gocryptotrader/common"
+	"github.com/thrasher-corp/gocryptotrader/common/convert"
 	"github.com/thrasher-corp/gocryptotrader/config"
 	"github.com/thrasher-corp/gocryptotrader/currency"
 	exchange "github.com/thrasher-corp/gocryptotrader/exchanges"
@@ -499,8 +500,34 @@ func (h *HUOBI) GetFundingHistory() ([]exchange.FundHistory, error) {
 }
 
 // GetExchangeHistory returns historic trade data since exchange opening.
-func (h *HUOBI) GetExchangeHistory(p currency.Pair, assetType asset.Item) ([]exchange.TradeHistory, error) {
-	return nil, common.ErrNotYetImplemented
+func (h *HUOBI) GetExchangeHistory(req *exchange.TradeHistoryRequest) ([]exchange.TradeHistory, error) {
+	var resp []exchange.TradeHistory
+	formattedPair := h.FormatExchangeCurrency(req.Pair, req.Asset)
+	trades, err := h.GetTradeHistory(formattedPair.String(), "2000")
+	if err != nil {
+		return resp, err
+	}
+
+	for x := range trades {
+		for y := range trades[x].Trades {
+			t := convert.UnixMillisToNano(trades[x].Trades[y].Timestamp)
+
+			side := order.Sell
+			if trades[x].Trades[y].Direction == "buy" {
+				side = order.Buy
+			}
+
+			resp = append(resp, exchange.TradeHistory{
+				Timestamp: time.Unix(0, t),
+				TID:       strconv.FormatInt(int64(trades[x].Trades[y].ID), 10),
+				Price:     trades[x].Trades[y].Price,
+				Amount:    trades[x].Trades[y].Amount,
+				Exchange:  h.GetName(),
+				Side:      side,
+			})
+		}
+	}
+	return resp, nil
 }
 
 // SubmitOrder submits a new order
