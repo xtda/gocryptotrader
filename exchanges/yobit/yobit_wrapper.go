@@ -324,7 +324,29 @@ func (y *Yobit) GetFundingHistory() ([]exchange.FundHistory, error) {
 
 // GetExchangeHistory returns historic trade data since exchange opening.
 func (y *Yobit) GetExchangeHistory(req *exchange.TradeHistoryRequest) ([]exchange.TradeHistory, error) {
-	return nil, common.ErrNotYetImplemented
+	formattedPair := y.FormatExchangeCurrency(req.Pair, req.Asset)
+	t, err := y.GetTrades(formattedPair.String(), req.TimestampStart.Unix(), true)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp []exchange.TradeHistory
+	for i := range t {
+		side := order.Sell
+		if t[i].Type == "buy" {
+			side = order.Buy
+		}
+
+		resp = append(resp, exchange.TradeHistory{
+			Timestamp: time.Unix(t[i].TID, 0),
+			TID:       strconv.FormatInt(t[i].TID, 10),
+			Price:     t[i].Price,
+			Amount:    t[i].Amount,
+			Exchange:  y.Name,
+			Side:      side,
+		})
+	}
+	return resp, nil
 }
 
 // SubmitOrder submits a new order
