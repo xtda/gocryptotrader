@@ -121,7 +121,7 @@ func TestGetDepth(t *testing.T) {
 // TestGetTrades API endpoint test
 func TestGetTrades(t *testing.T) {
 	t.Parallel()
-	_, err := k.GetTrades("BCHEUR")
+	_, err := k.GetTrades("BCHEUR", "")
 	if err != nil {
 		t.Error("GetTrades() error", err)
 	}

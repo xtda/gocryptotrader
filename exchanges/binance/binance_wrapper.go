@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/thrasher-corp/gocryptotrader/common"
+	"github.com/thrasher-corp/gocryptotrader/common/convert"
 	"github.com/thrasher-corp/gocryptotrader/config"
 	"github.com/thrasher-corp/gocryptotrader/currency"
 	exchange "github.com/thrasher-corp/gocryptotrader/exchanges"
@@ -410,8 +411,41 @@ func (b *Binance) GetFundingHistory() ([]exchange.FundHistory, error) {
 }
 
 // GetExchangeHistory returns historic trade data since exchange opening.
-func (b *Binance) GetExchangeHistory(p currency.Pair, assetType asset.Item) ([]exchange.TradeHistory, error) {
-	return nil, common.ErrNotYetImplemented
+func (b *Binance) GetExchangeHistory(req *exchange.TradeHistoryRequest) ([]exchange.TradeHistory, error) {
+	var resp []exchange.TradeHistory
+
+	// If no timestamp, this will default to 3 months prior.
+	if req.TimestampStart.Unix() == 0 {
+		req.TimestampStart = time.Now().AddDate(0, -3, 0)
+	}
+	timestampEnd := req.TimestampStart.Add(1 * time.Hour)
+
+	formattedPair := b.FormatExchangeCurrency(req.Pair, req.Asset)
+
+	// Aggregated trades has compression when trades are executed at the same
+	// time thus reducing request data.
+	trades, err := b.GetAggregatedTrades(formattedPair.String(),
+		1000,
+		convert.UnixMillis(req.TimestampStart),
+		convert.UnixMillis(timestampEnd))
+	if err != nil {
+		return resp, err
+	}
+
+	for i := range trades {
+		resp = append(resp, exchange.TradeHistory{
+			Timestamp:    time.Unix(0, convert.UnixMillisToNano(trades[i].TimeStamp)),
+			TID:          strconv.FormatInt(trades[i].ATradeID, 10),
+			FirstTradeID: strconv.FormatInt(trades[i].FirstTradeID, 10),
+			LastTradeID:  strconv.FormatInt(trades[i].LastTradeID, 10),
+			Price:        trades[i].Price,
+			Amount:       trades[i].Quantity,
+			Maker:        trades[i].Maker,
+			Exchange:     b.Name,
+			Asset:        req.Asset,
+		})
+	}
+	return resp, nil
 }
 
 // SubmitOrder submits a new order

@@ -239,7 +239,7 @@ func (b *Bitfinex) GetTrades(currencyPair string, limit, timestampStart, timesta
 		"?" +
 		v.Encode()
 
-	var resp [][]interface{}
+	var resp [][6]interface{}
 	err := b.SendHTTPRequest(path, &resp, trade)
 	if err != nil {
 		return nil, err
@@ -248,9 +248,9 @@ func (b *Bitfinex) GetTrades(currencyPair string, limit, timestampStart, timesta
 	var history []Trade
 	for i := range resp {
 		amount := resp[i][2].(float64)
-		side := order.Buy.String()
+		side := order.Buy
 		if amount < 0 {
-			side = order.Sell.String()
+			side = order.Sell
 			amount *= -1
 		}
 
@@ -261,7 +261,7 @@ func (b *Bitfinex) GetTrades(currencyPair string, limit, timestampStart, timesta
 				Amount:    amount,
 				Rate:      resp[i][3].(float64),
 				Period:    int64(resp[i][4].(float64)),
-				Type:      side,
+				Side:      side,
 			})
 			continue
 		}
@@ -271,7 +271,7 @@ func (b *Bitfinex) GetTrades(currencyPair string, limit, timestampStart, timesta
 			Timestamp: int64(resp[i][1].(float64)),
 			Amount:    amount,
 			Price:     resp[i][3].(float64),
-			Type:      side,
+			Side:      side,
 		})
 	}
 

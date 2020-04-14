@@ -3,6 +3,7 @@ package btcmarkets
 import (
 	"errors"
 	"fmt"
+	"net/url"
 	"strings"
 	"sync"
 	"time"
@@ -370,8 +371,37 @@ func (b *BTCMarkets) GetFundingHistory() ([]exchange.FundHistory, error) {
 }
 
 // GetExchangeHistory returns historic trade data since exchange opening.
-func (b *BTCMarkets) GetExchangeHistory(p currency.Pair, assetType asset.Item) ([]exchange.TradeHistory, error) {
-	return nil, common.ErrNotYetImplemented
+func (b *BTCMarkets) GetExchangeHistory(req *exchange.TradeHistoryRequest) ([]exchange.TradeHistory, error) {
+	var resp []exchange.TradeHistory
+	v := url.Values{}
+	if req.TradeID != "" {
+		v.Set("since", req.TradeID)
+	}
+
+	t, err := b.GetTrades(req.Pair.String(), 0, req.TimestampStart.Unix(), 5000)
+	if err != nil {
+		return resp, err
+	}
+
+	if len(t) == 0 {
+		return resp, errors.New("no history returned")
+	}
+
+	for i := range t {
+		side := order.Buy
+		if t[i].Side == "Ask" {
+			side = order.Sell
+		}
+		resp = append(resp, exchange.TradeHistory{
+			Amount:    t[i].Amount,
+			Exchange:  b.Name,
+			Price:     t[i].Price,
+			TID:       t[i].TradeID,
+			Timestamp: t[i].Timestamp,
+			Side:      side,
+		})
+	}
+	return resp, nil
 }
 
 // SubmitOrder submits a new order

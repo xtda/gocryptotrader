@@ -94,7 +94,7 @@ func TestGetHistoricalTrades(t *testing.T) {
 func TestGetAggregatedTrades(t *testing.T) {
 	t.Parallel()
 
-	_, err := b.GetAggregatedTrades("BTCUSDT", 5)
+	_, err := b.GetAggregatedTrades("BTCUSDT", 5, 0, 0)
 	if err != nil {
 		t.Error("Binance GetAggregatedTrades() error", err)
 	}

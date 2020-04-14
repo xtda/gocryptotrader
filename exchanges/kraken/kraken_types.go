@@ -609,3 +609,9 @@ type WsCancelOrderResponse struct {
 	Status       string `json:"status"`
 	ErrorMessage string `json:"errorMessage"`
 }
+
+// TradesResponse defines the response data for trades
+type TradesResponse struct {
+	Error  interface{}            `json:"error"`
+	Result map[string]interface{} `json:"result"`
+}

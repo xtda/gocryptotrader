@@ -76,7 +76,7 @@ func TestGetOrderBook(t *testing.T) {
 
 func TestGetTradeHistory(t *testing.T) {
 	t.Parallel()
-	_, err := l.GetTradeHistory("BTCUSD")
+	_, err := l.GetTradeHistory("BTCUSD", 0)
 	if err != nil {
 		t.Error("GetTradeHistory() error", err)
 	}
