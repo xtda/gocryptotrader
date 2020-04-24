@@ -17,7 +17,7 @@ load := func() {
 
     ema10 := sma.calculate(ohlcvData.candles, 10)
     ema30 :=  sma.calculate(ohlcvData.candles, 30)
-    ob := exch.orderbook("btc markets", "btc-aud", "-", "spot")
+    ob := exch.orderbook(exchName, currency, "-", "spot")
     if cross.over(ema10, ema30) {
         exch.ordersubmit(exchName, currency, "-","LIMIT","BUY",ob.asks[0].price, amountToBuy,"")
     } else if cross.over(ema30, ema10) {
