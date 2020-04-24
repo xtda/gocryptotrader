@@ -15,4 +15,5 @@ var Modules = map[string]map[string]tengo.Object{
 	"indicator/obv":    indicators.ObvModule,
 	"indicator/mfi":    indicators.MfiModule,
 	"indicator/atr":    indicators.AtrModule,
+	"indicator/cross":  indicators.CrossModule,
 }
