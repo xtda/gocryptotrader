@@ -1,3 +1,4 @@
+// Package backtest to be written...
 package backtest
 
 import (
@@ -6,7 +7,8 @@ import (
 	"github.com/thrasher-corp/gocryptotrader/exchanges/order"
 )
 
-// Statistic
+// Statistic contains the history of events and transactions.
+// Also contains the computed data related to the timeline.
 type Statistic struct {
 	eventHistory       []EventHandler
 	transactionHistory []FillEvent
@@ -19,6 +21,8 @@ type Statistic struct {
 	pair         string
 }
 
+// EquityPoint struct contains the timestamp, equity, equity return,
+// drawnDown, and buy and hold value.
 type EquityPoint struct {
 	timestamp       time.Time
 	equity          float64
@@ -27,6 +31,9 @@ type EquityPoint struct {
 	buyAndHoldValue float64
 }
 
+// Results struct contains the currency pair, total events,
+// total transactions, events, transactions, sharpie ratio, and
+// strategy name.
 type Results struct {
 	Pair              string               `json:"pair"`
 	TotalEvents       int                  `json:"totalEvents"`

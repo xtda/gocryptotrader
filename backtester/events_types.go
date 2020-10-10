@@ -1,3 +1,4 @@
+// Package backtest to be written...
 package backtest
 
 import (
@@ -7,11 +8,13 @@ import (
 	"github.com/thrasher-corp/gocryptotrader/exchanges/order"
 )
 
+// Event contains the time and the currency pair.
 type Event struct {
 	Time         time.Time
 	CurrencyPair currency.Pair
 }
 
+// Signal contains the event, amount, price and direction.
 type Signal struct {
 	Event
 	Amount    float64

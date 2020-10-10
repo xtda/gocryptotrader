@@ -1,3 +1,4 @@
+// Package backtest to be written.
 package backtest
 
 import (
@@ -6,12 +7,15 @@ import (
 	"github.com/thrasher-corp/gocryptotrader/exchanges/ticker"
 )
 
+// DataFromTick struct contains the list of ticker prices.
 type DataFromTick struct {
 	ticks []*ticker.Price
 
 	Data
 }
 
+// Load will load the ticks from the exchange and convert them to
+// backtest ticks and set the stream.
 func (d *DataFromTick) Load() error {
 	if len(d.ticks) == 0 {
 		return errors.New("no tick data provided")

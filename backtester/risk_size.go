@@ -1,3 +1,4 @@
+// Package backtest to be written...
 package backtest
 
 import (
@@ -8,7 +9,8 @@ import (
 	gctorder "github.com/thrasher-corp/gocryptotrader/exchanges/order"
 )
 
-// TODO implement risk manager
+// EvaluateOrder evaluates the risk tolerance if the order is leveraged.
+// TODO implement risk manager.
 func (r *Risk) EvaluateOrder(order OrderEvent, _ DataEventHandler, _ map[currency.Pair]Positions) (*Order, error) {
 	retOrder := order.(*Order)
 
@@ -18,7 +20,8 @@ func (r *Risk) EvaluateOrder(order OrderEvent, _ DataEventHandler, _ map[currenc
 	return retOrder, nil
 }
 
-// TODO implement risk manager
+// SizeOrder determines the size of the order
+// TODO implement risk manager.
 func (s *Size) SizeOrder(order OrderEvent, _ DataEventHandler, _ PortfolioHandler) (*Order, error) {
 	retOrder := order.(*Order)
 

@@ -1,3 +1,4 @@
+// Package backtest to be written...
 package backtest
 
 import (
@@ -6,6 +7,7 @@ import (
 	"github.com/thrasher-corp/gocryptotrader/exchanges/order"
 )
 
+// Order contains the event, id direction, status, price, amount, order type, limit and leverage.
 type Order struct {
 	Event
 	id        int
@@ -18,6 +20,7 @@ type Order struct {
 	leverage  float64
 }
 
+// OrderBook contains the list of orders, the order history and the counter.
 type OrderBook struct {
 	counter int
 	orders  []OrderEvent

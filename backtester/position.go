@@ -1,3 +1,4 @@
+// Package backtest to be written...
 package backtest
 
 import (
@@ -5,6 +6,7 @@ import (
 	gctorder "github.com/thrasher-corp/gocryptotrader/exchanges/order"
 )
 
+// Create will update the positions timestamp, pair and fill event.
 func (p *Positions) Create(fill FillEvent) {
 	p.timestamp = fill.GetTime()
 	p.pair = fill.Pair()
@@ -12,12 +14,14 @@ func (p *Positions) Create(fill FillEvent) {
 	p.update(fill)
 }
 
+// Update wil update the positions timestamp and fill event.
 func (p *Positions) Update(fill FillEvent) {
 	p.timestamp = fill.GetTime()
 
 	p.update(fill)
 }
 
+// UpdateValue sets the timestamp and the latest price.
 func (p *Positions) UpdateValue(data DataEventHandler) {
 	p.timestamp = data.GetTime()
 

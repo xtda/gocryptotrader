@@ -1,3 +1,4 @@
+// Package backtest to be written...
 package backtest
 
 import (
@@ -7,19 +8,19 @@ import (
 	"github.com/thrasher-corp/gocryptotrader/exchanges/order"
 )
 
-// DataHandler interface for Loading and Streaming data
+// DataHandler interface for Loading and Streaming data.
 type DataHandler interface {
 	DataLoader
 	DataStreamer
 	Reset()
 }
 
-// DataLoader interface for Loading data into backtest supported format
+// DataLoader interface for Loading data into backtest supported format.
 type DataLoader interface {
 	Load() error
 }
 
-// DataStreamer interface handles loading, parsing, distributing BackTest data
+// DataStreamer interface handles loading, parsing, distributing BackTest data.
 type DataStreamer interface {
 	Next() (DataEventHandler, bool)
 	Stream() []DataEventHandler
@@ -35,32 +36,32 @@ type DataStreamer interface {
 	StreamVol() []float64
 }
 
-// EventHandler interface implements required GetTime() & Pair() return
+// EventHandler interface implements required GetTime() & Pair() return.
 type EventHandler interface {
 	IsEvent() bool
 	GetTime() time.Time
 	Pair() currency.Pair
 }
 
-// DataHandler interface used for loading and interacting with Data
+// DataEventHandler interface used for loading and interacting with Data.
 type DataEventHandler interface {
 	EventHandler
 	DataType() DataType
 	LatestPrice() float64
 }
 
-// CandleEvent for OHLCV tick data
+// CandleEvent for OHLCV tick data.
 type CandleEvent interface {
 	DataEventHandler
 }
 
-// TickEvent interface for ticker data (bid/ask)
+// TickEvent interface for ticker data (bid/ask).
 type TickEvent interface {
 	DataEventHandler
 }
 
 // SignalEvent handler is used for getting trade signal details
-// Example Amount and Price of current candle tick
+// Example Amount and Price of current candle tick.
 type SignalEvent interface {
 	EventHandler
 	Directioner
@@ -71,7 +72,7 @@ type SignalEvent interface {
 	IsSignal() bool
 }
 
-// OrderEvent
+// OrderEvent to be written.
 type OrderEvent interface {
 	EventHandler
 	Directioner
@@ -87,11 +88,14 @@ type OrderEvent interface {
 	IsLeveraged() bool
 }
 
+// Directioner interface is responsible for setting or getting the direction.
 type Directioner interface {
 	SetDirection(side order.Side)
 	GetDirection() order.Side
 }
 
+// FillEvent interface is responsible for setting amounts and
+// getting amounts, price, commission, exchange fee, cost value and netvalue.
 type FillEvent interface {
 	EventHandler
 	Directioner
@@ -106,11 +110,12 @@ type FillEvent interface {
 	NetValue() float64
 }
 
+// ExecutionHandler interface to be written.
 type ExecutionHandler interface {
 	ExecuteOrder(OrderEvent, DataHandler) (*Fill, error)
 }
 
-// StatisticHandler interface handles
+// StatisticHandler interface to be written.
 type StatisticHandler interface {
 	TrackEvent(EventHandler)
 	Events() []EventHandler
@@ -135,6 +140,7 @@ type StatisticHandler interface {
 	SetStrategyName(string)
 }
 
+// PortfolioHandler to be written.
 type PortfolioHandler interface {
 	OnSignal(SignalEvent, DataHandler) (*Order, error)
 	OnFill(FillEvent, DataHandler) (*Fill, error)
@@ -151,15 +157,18 @@ type PortfolioHandler interface {
 	Reset()
 }
 
+// StrategyHandler to be written.
 type StrategyHandler interface {
 	Name() string
 	OnSignal(DataHandler, PortfolioHandler) (SignalEvent, error)
 }
 
+// RiskHandler to be written.
 type RiskHandler interface {
 	EvaluateOrder(OrderEvent, DataEventHandler, map[currency.Pair]Positions) (*Order, error)
 }
 
+// SizeHandler to be written.
 type SizeHandler interface {
 	SizeOrder(OrderEvent, DataEventHandler, PortfolioHandler) (*Order, error)
 }

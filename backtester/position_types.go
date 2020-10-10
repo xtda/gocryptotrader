@@ -1,3 +1,4 @@
+// Package backtest to be written...
 package backtest
 
 import (
@@ -6,6 +7,10 @@ import (
 	"github.com/thrasher-corp/gocryptotrader/currency"
 )
 
+// Positions struct contains the following fields
+// timestamp, pair, amount, amountBought, amountSold, avgPrice, avgPriceNet, avgPriceBought, avgPriceSold, value,
+// valueBought, valueSold, netValue, netValueBought, netValueSold, marketPrice, marketValue, commission,
+// exchangeFee, cost, costBasis, realProfitLoss, unrealProfitLoss, totalProfitLoss.
 type Positions struct {
 	timestamp      time.Time
 	pair           currency.Pair

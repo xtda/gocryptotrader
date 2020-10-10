@@ -1,3 +1,4 @@
+// Package backtest to be written.
 package backtest
 
 import (
@@ -6,12 +7,14 @@ import (
 	"github.com/thrasher-corp/gocryptotrader/exchanges/kline"
 )
 
+// DataFromKline struct contains the kline item and data.
 type DataFromKline struct {
 	Item kline.Item
 
 	Data
 }
 
+// Load will load the data from the kline exchange.
 func (d *DataFromKline) Load() error {
 	if len(d.Item.Candles) == 0 {
 		return errors.New("no candle data provided")
@@ -35,6 +38,7 @@ func (d *DataFromKline) Load() error {
 	return nil
 }
 
+// StreamOpen returns the open price for each candle in the stream.
 func (d *DataFromKline) StreamOpen() []float64 {
 	ret := make([]float64, len(d.stream))
 	for x := range d.stream[d.offset:] {
@@ -43,6 +47,7 @@ func (d *DataFromKline) StreamOpen() []float64 {
 	return ret
 }
 
+// StreamHigh returns the high price for each candle in the stream.
 func (d *DataFromKline) StreamHigh() []float64 {
 	ret := make([]float64, len(d.stream))
 	for x := range d.stream[d.offset:] {
@@ -51,6 +56,7 @@ func (d *DataFromKline) StreamHigh() []float64 {
 	return ret
 }
 
+// StreamLow returns the low price for each candle in the stream.
 func (d *DataFromKline) StreamLow() []float64 {
 	ret := make([]float64, len(d.stream))
 	for x := range d.stream[d.offset:] {
@@ -59,6 +65,7 @@ func (d *DataFromKline) StreamLow() []float64 {
 	return ret
 }
 
+// StreamClose returns the closing price for each candle in the stream.
 func (d *DataFromKline) StreamClose() []float64 {
 	ret := make([]float64, len(d.stream))
 	for x := range d.stream[d.offset:] {
@@ -67,6 +74,7 @@ func (d *DataFromKline) StreamClose() []float64 {
 	return ret
 }
 
+// StreamVol returns the volume of each candle in the stream.
 func (d *DataFromKline) StreamVol() []float64 {
 	ret := make([]float64, len(d.stream))
 	for x := range d.stream[d.offset:] {

@@ -1,3 +1,4 @@
+// Package backtest to be written...
 package backtest
 
 import (
@@ -8,16 +9,19 @@ import (
 	gctorder "github.com/thrasher-corp/gocryptotrader/exchanges/order"
 )
 
+// SetSizeManager sets the size manager from the side handler.
 func (p *Portfolio) SetSizeManager(size SizeHandler) {
 	p.sizeManager = size
 }
 
+// Reset resets the portfolio to the default state.
 func (p *Portfolio) Reset() {
 	p.funds = 0
 	p.holdings = nil
 	p.transactions = nil
 }
 
+// OnSignal returns an order based on the signal given.
 func (p *Portfolio) OnSignal(signal SignalEvent, data DataHandler) (*Order, error) {
 	var limit float64
 
@@ -63,6 +67,7 @@ func (p *Portfolio) OnSignal(signal SignalEvent, data DataHandler) (*Order, erro
 	return order, nil
 }
 
+// OnFill returns a fill based on the fill event.
 func (p *Portfolio) OnFill(fill FillEvent, _ DataHandler) (*Fill, error) {
 	if p.holdings == nil {
 		p.holdings = make(map[currency.Pair]Positions)
@@ -88,6 +93,7 @@ func (p *Portfolio) OnFill(fill FillEvent, _ DataHandler) (*Fill, error) {
 	return fill.(*Fill), nil
 }
 
+// IsInvested determines if the portfolio contains the currency pair with an amount positive or negative.
 func (p *Portfolio) IsInvested(pair currency.Pair) (pos Positions, ok bool) {
 	pos, ok = p.holdings[pair]
 	if ok && (pos.amount != 0) {
@@ -96,6 +102,7 @@ func (p *Portfolio) IsInvested(pair currency.Pair) (pos Positions, ok bool) {
 	return pos, false
 }
 
+// IsLong determines if portfolio contains the currency pair and the position amount is greater then zero.
 func (p *Portfolio) IsLong(pair currency.Pair) (pos Positions, ok bool) {
 	pos, ok = p.holdings[pair]
 	if ok && (pos.amount > 0) {
@@ -104,6 +111,7 @@ func (p *Portfolio) IsLong(pair currency.Pair) (pos Positions, ok bool) {
 	return pos, false
 }
 
+// IsShort determines if portfolio contains the currency pair and the position amount is less then zero.
 func (p *Portfolio) IsShort(pair currency.Pair) (pos Positions, ok bool) {
 	pos, ok = p.holdings[pair]
 	if ok && (pos.amount < 0) {
@@ -112,6 +120,7 @@ func (p *Portfolio) IsShort(pair currency.Pair) (pos Positions, ok bool) {
 	return pos, false
 }
 
+// Update will set the pair and it's position to the portfolio's holdings.
 func (p *Portfolio) Update(d DataEventHandler) {
 	if pos, ok := p.IsInvested(d.Pair()); ok {
 		pos.UpdateValue(d)
@@ -119,22 +128,27 @@ func (p *Portfolio) Update(d DataEventHandler) {
 	}
 }
 
+// SetInitialFunds sets the initial funds available.
 func (p *Portfolio) SetInitialFunds(initial float64) {
 	p.initialFunds = initial
 }
 
+// InitialFunds gets the initialFunds sets on the portfolio.
 func (p *Portfolio) InitialFunds() float64 {
 	return p.initialFunds
 }
 
+// SetFunds sets the funds on the portfolio.
 func (p *Portfolio) SetFunds(funds float64) {
 	p.funds = funds
 }
 
+// Funds gets the funds from the portfolio.
 func (p *Portfolio) Funds() float64 {
 	return p.funds
 }
 
+// Value sums up the market value from all of currency pairs in the holdings.
 func (p *Portfolio) Value() float64 {
 	holdingValue := decimal.NewFromFloat(0)
 	for x := range p.holdings {
@@ -147,6 +161,7 @@ func (p *Portfolio) Value() float64 {
 	return value
 }
 
+// ViewHoldings returns the map currency pairs and their positions.
 func (p *Portfolio) ViewHoldings() map[currency.Pair]Positions {
 	return p.holdings
 }

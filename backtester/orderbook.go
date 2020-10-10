@@ -1,3 +1,4 @@
+// Package backtest to be written.
 package backtest
 
 import (
@@ -8,7 +9,7 @@ import (
 	gctorder "github.com/thrasher-corp/gocryptotrader/exchanges/order"
 )
 
-// Add order to order book
+// Add order to order book.
 func (ob *OrderBook) Add(order OrderEvent) {
 	ob.m.Lock()
 	ob.counter++
@@ -17,7 +18,7 @@ func (ob *OrderBook) Add(order OrderEvent) {
 	ob.m.Unlock()
 }
 
-// Remove order from order book by ID
+// Remove order from order book by ID.
 func (ob *OrderBook) Remove(id int) error {
 	ob.m.Lock()
 	defer ob.m.Unlock()
@@ -31,7 +32,7 @@ func (ob *OrderBook) Remove(id int) error {
 	return fmt.Errorf("order %v not found", id)
 }
 
-// Orders returns all orders
+// Orders returns all orders.
 func (ob *OrderBook) Orders() []OrderEvent {
 	return ob.orders
 }
@@ -52,7 +53,7 @@ func (ob *OrderBook) orderBy(fn func(order OrderEvent) bool) ([]OrderEvent, bool
 	return orders, true
 }
 
-// OrdersByPair returns all orders by currency Pair
+// OrdersByPair returns all orders by currency Pair.
 func (ob *OrderBook) OrdersByPair(p currency.Pair) ([]OrderEvent, bool) {
 	var fn = func(order OrderEvent) bool {
 		return order.Pair() != p
@@ -62,7 +63,7 @@ func (ob *OrderBook) OrdersByPair(p currency.Pair) ([]OrderEvent, bool) {
 	return orders, ok
 }
 
-// OrdersBidByPair returns bids by pair
+// OrdersBidByPair returns bids by pair.
 func (ob *OrderBook) OrdersBidByPair(p currency.Pair) ([]OrderEvent, bool) {
 	var fn = func(order OrderEvent) bool {
 		if (order.Pair() != p) || (order.GetDirection() != gctorder.Buy) {
@@ -82,7 +83,7 @@ func (ob *OrderBook) OrdersBidByPair(p currency.Pair) ([]OrderEvent, bool) {
 	return orders, ok
 }
 
-//  OrdersAskByPair returns asks by pair
+// OrdersAskByPair returns asks by pair.
 func (ob *OrderBook) OrdersAskByPair(p currency.Pair) ([]OrderEvent, bool) {
 	var fn = func(order OrderEvent) bool {
 		if (order.Pair() != p) || (order.GetDirection() != gctorder.Sell) {
@@ -95,7 +96,7 @@ func (ob *OrderBook) OrdersAskByPair(p currency.Pair) ([]OrderEvent, bool) {
 	return orders, ok
 }
 
-// OpenOrders retrieve all open orders / PartiallyFilled orders
+// OrdersOpen retrieve all open orders / PartiallyFilled orders.
 func (ob *OrderBook) OrdersOpen() ([]OrderEvent, bool) {
 	var fn = func(order OrderEvent) bool {
 		if (order.GetStatus() != gctorder.New) || (order.GetStatus() != gctorder.Open) || (order.GetStatus() != gctorder.PartiallyFilled) {
@@ -108,8 +109,8 @@ func (ob *OrderBook) OrdersOpen() ([]OrderEvent, bool) {
 	return orders, ok
 }
 
-// OrdersCancelled retrieve all cancelled or pending cancel orders
-func (ob *OrderBook) OrdersCanceled() ([]OrderEvent, bool) {
+// OrdersCancelled retrieve all cancelled or pending cancel orders.
+func (ob *OrderBook) OrdersCancelled() ([]OrderEvent, bool) {
 	var fn = func(order OrderEvent) bool {
 		if (order.GetStatus() == gctorder.Cancelled) || (order.GetStatus() == gctorder.PendingCancel) {
 			return true
