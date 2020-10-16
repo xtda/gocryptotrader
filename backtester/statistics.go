@@ -9,8 +9,6 @@ import (
 	"time"
 
 	"github.com/shopspring/decimal"
-	"github.com/thrasher-corp/gocryptotrader/charts"
-	"github.com/thrasher-corp/gocryptotrader/common"
 	"gonum.org/v1/gonum/stat"
 )
 
