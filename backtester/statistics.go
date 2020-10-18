@@ -1,3 +1,4 @@
+// Package backtest to be written...
 package backtest
 
 import (
@@ -11,7 +12,7 @@ import (
 	"gonum.org/v1/gonum/stat"
 )
 
-// Update statistic for event
+// Update will update the statistic for a given event.
 func (s *Statistic) Update(d DataEventHandler, p PortfolioHandler) {
 	if s.initialBuy == 0 {
 		s.initialBuy = p.InitialFunds() / d.LatestPrice()
@@ -41,27 +42,27 @@ func (s *Statistic) Update(d DataEventHandler, p PortfolioHandler) {
 	s.equity = append(s.equity, e)
 }
 
-// TrackEvent event adds current event to history for statistic calculation
+// TrackEvent event adds current event to history for statistic calculation.
 func (s *Statistic) TrackEvent(e EventHandler) {
 	s.eventHistory = append(s.eventHistory, e)
 }
 
-// Events returns list of events
+// Events returns list of events.
 func (s *Statistic) Events() []EventHandler {
 	return s.eventHistory
 }
 
-// TrackTransaction add current transaction (trade) to history for statistic
+// TrackTransaction add current transaction (trade) to history for statistic.
 func (s *Statistic) TrackTransaction(f FillEvent) {
 	s.transactionHistory = append(s.transactionHistory, f)
 }
 
-// Transactions() returns list of transctions
+// Transactions returns list of transactions.
 func (s *Statistic) Transactions() []FillEvent {
 	return s.transactionHistory
 }
 
-// Reset statistics
+// Reset statistics.
 func (s *Statistic) Reset() {
 	s.eventHistory = nil
 	s.transactionHistory = nil
@@ -70,7 +71,7 @@ func (s *Statistic) Reset() {
 	s.low = EquityPoint{}
 }
 
-// ReturnResults will return Results for current backtest run
+// ReturnResults will return Results for current backtest run.
 func (s *Statistic) ReturnResults() Results {
 	results := Results{
 		TotalEvents:       len(s.Events()),
@@ -95,6 +96,7 @@ func (s *Statistic) ReturnResults() Results {
 	return results
 }
 
+// PrintResult prints the results of the events, transactions, total equity and max drawdown.
 func (s *Statistic) PrintResult() {
 	fmt.Printf("Counted %d total events.\n", len(s.Events()))
 
@@ -108,6 +110,8 @@ func (s *Statistic) PrintResult() {
 	fmt.Println("TotalEquity:", result, "MaxDrawdown:", s.MaxDrawdown())
 }
 
+// TotalEquityReturn returns the total equity to be returned. When the first
+// equity point is missing, it can not calculate the total equity and an error is returned.
 func (s *Statistic) TotalEquityReturn() (r float64, err error) {
 	firstEquityPoint, ok := s.firstEquityPoint()
 	if !ok {
@@ -123,16 +127,19 @@ func (s *Statistic) TotalEquityReturn() (r float64, err error) {
 	return total, nil
 }
 
+// MaxDrawdown to be written.
 func (s *Statistic) MaxDrawdown() float64 {
 	_, ep := s.maxDrawdownPoint()
 	return ep.drawnDown
 }
 
+// MaxDrawdownTime to be written.
 func (s *Statistic) MaxDrawdownTime() time.Time {
 	_, ep := s.maxDrawdownPoint()
 	return ep.timestamp
 }
 
+// MaxDrawdownDuration to be written.
 func (s *Statistic) MaxDrawdownDuration() time.Duration {
 	i, ep := s.maxDrawdownPoint()
 
@@ -150,7 +157,7 @@ func (s *Statistic) MaxDrawdownDuration() time.Duration {
 	return ep.timestamp.Sub(maxPoint.timestamp)
 }
 
-// SharpeRatio returns sharpe ratio of backtest compared to risk-free
+// SharpeRatio returns sharpe ratio of backtest compared to risk-free.
 func (s *Statistic) SharpeRatio(riskfree float64) float64 {
 	var equityReturns = make([]float64, len(s.equity))
 
@@ -162,6 +169,7 @@ func (s *Statistic) SharpeRatio(riskfree float64) float64 {
 	return (mean - riskfree) / stddev
 }
 
+// SortinoRatio returns the ratio based on the mean, and risk free.
 func (s *Statistic) SortinoRatio(riskfree float64) float64 {
 	var equityReturns = make([]float64, len(s.equity))
 
@@ -180,7 +188,7 @@ func (s *Statistic) SortinoRatio(riskfree float64) float64 {
 	return (mean - riskfree) / stdDev
 }
 
-// ViewEquityHistory returns a equity history list
+// ViewEquityHistory returns a equity history list.
 func (s *Statistic) ViewEquityHistory() []EquityPoint {
 	return s.equity
 }
@@ -262,6 +270,8 @@ func (s *Statistic) maxDrawdownPoint() (i int, ep EquityPoint) {
 	return index, s.equity[index]
 }
 
+// JSON when given a true parameter, this method will write to a file the
+// json output. Returned is the json array in bytes.
 func (s *Statistic) JSON(writeFile bool) ([]byte, error) {
 	output, err := json.MarshalIndent(s.ReturnResults(), "", " ")
 	if err != nil {
@@ -285,6 +295,7 @@ func (s *Statistic) JSON(writeFile bool) ([]byte, error) {
 	return output, nil
 }
 
+// SetStrategyName sets the strategy name.
 func (s *Statistic) SetStrategyName(name string) {
 	s.strategyName = name
 }

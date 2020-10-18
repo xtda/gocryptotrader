@@ -1,9 +1,13 @@
+// Package backtest to be written...
 package backtest
 
 import (
 	"math"
 )
 
+// ExecuteOrder creates and returns a new fill with the event, amount and
+// price from the order event. From the exchange, it will set the direction, commission,
+// exchange fee, and calculates the cost.
 func (e *Exchange) ExecuteOrder(order OrderEvent, data DataHandler) (*Fill, error) {
 	f := &Fill{
 		Event: Event{

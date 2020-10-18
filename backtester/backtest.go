@@ -1,11 +1,12 @@
+// Package backtest to be written...
 package backtest
 
-// New returns a new BackTest instance
+// New returns a new BackTest instance.
 func New() *BackTest {
 	return &BackTest{}
 }
 
-// Reset BackTest values to default
+// Reset BackTest values to default.
 func (t *BackTest) Reset() {
 	t.eventQueue = nil
 	t.data.Reset()
@@ -13,7 +14,7 @@ func (t *BackTest) Reset() {
 	t.statistic.Reset()
 }
 
-// Run executes Backtest
+// Run executes Backtest.
 func (t *BackTest) Run() error {
 	t.portfolio.SetFunds(t.portfolio.InitialFunds())
 	for event, ok := t.nextEvent(); true; event, ok = t.nextEvent() {

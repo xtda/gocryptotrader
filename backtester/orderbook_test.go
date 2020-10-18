@@ -243,7 +243,7 @@ func TestOrderBook_OrdersCanceled(t *testing.T) {
 				orders:  test.fields.orders,
 				history: test.fields.history,
 			}
-			got, got1 := ob.OrdersCanceled()
+			got, got1 := ob.OrdersCancelled()
 			if !reflect.DeepEqual(got, test.want) {
 				t.Errorf("OrdersCanceled() got = %v, want %v", got, test.want1)
 			}

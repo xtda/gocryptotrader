@@ -88,12 +88,12 @@ func TestBackTest(t *testing.T) {
 		fmt.Println(ret.Transactions[x])
 	}
 	fmt.Printf("Total Events: %v | Total Transactions: %v\n", ret.TotalEvents, ret.TotalTransactions)
-	// r, err := statistic.JSON(false)
+	//golint:ignore r, err := statistic.JSON(false)
 	// if err != nil {
 	// 	t.Fatal(err)
 	// }
 
-	// err = GenerateOutput(r)
+	//golint:ignore err = GenerateOutput(r)
 	// if err != nil {
 	// 	t.Fatal(err)
 	// }
